@@ -29,6 +29,7 @@ public class TodoList : TodoListAPI {
     static let defaultDatabase = "todolist"
     
     var mysql: MySQL.Database?
+    var connection: Connection?
     
     public init(database: String = TodoList.defaultDatabase,
                 host: String = TodoList.defaultHost,
@@ -42,6 +43,7 @@ public class TodoList : TodoListAPI {
                 password: password,
                 database: database
             )
+            connection = try mysql?.makeConnection()
         } catch {
             print("Error: \(error)")
         }
@@ -57,6 +59,7 @@ public class TodoList : TodoListAPI {
                 password: dbConfiguration.password!,
                 database: TodoList.defaultDatabase
             )
+            connection = try mysql?.makeConnection()
         } catch {
             print("Error: \(error)")
         }
@@ -86,12 +89,11 @@ public class TodoList : TodoListAPI {
         let user = withUserID ?? "default"
         
         do {
-            
-            let query = "SELECT * FROM todos WHERE owner_id=\(user) AND tid=\(withDocumentID)"
-            
+            let query = "SELECT * FROM todos WHERE owner_id=\"\(user)\" AND id=\"\(withDocumentID)\""
             let results = try mysql?.execute(query)
-            print("results: \(results)")
+            print("*** get results: \(results)")
             
+            //TODO construct todoitem to return
         }
         catch {
             print("Testing get item failed: \(error)")
@@ -105,19 +107,20 @@ public class TodoList : TodoListAPI {
         
         do {
             
-            if let localMysql = mysql{
+            let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completed), \(order))"
+            
+            try mysql?.execute(query, [], connection)
+            
+            let result = try mysql?.execute("SELECT LAST_INSERT_ID()", [], connection)
+            
+            if let documentID = (result?[0]["LAST_INSERT_ID()"])?.int {
                 
-                let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completed), \(order))"
-                try localMysql.execute(query)
+                print("docID: \(documentID)")
+                let todoItem = TodoItem(documentID: String(documentID), userID: user, order: order, title: title, completed: completed)
                 
-                // LAST_INSERT_ID() returns a type MySQL.Value.int
-                //let result = try localMysql.execute("SELECT LAST_INSERT_ID()")
-                //let docID = (result[0]["LAST_INSERT_ID()"])
-                
-                //print("docID: \(docID)")
-                //let todoItem = TodoItem(documentID: "", userID: user, order: order, title: title, completed: completed)
-                
-                //oncompletion(todoItem, nil)
+                oncompletion(todoItem, nil)
+            }
+            else {
                 
             }
             
@@ -125,11 +128,7 @@ public class TodoList : TodoListAPI {
         catch {
             print("Testing add item failed: \(error)")
         }
-        
-        
     }
-    
-    
     
     public func update(documentID: String, userID: String?, title: String?, order: Int?,
                        completed: Bool?, oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
