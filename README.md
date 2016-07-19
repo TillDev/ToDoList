@@ -1,9 +1,13 @@
 # TodoList (MySQL)
 MySQL implementation of TodoList
 
-Quick start on MacOS:
+Quick start for developing locally on MacOS:
 
 - Download the [Swift DEVELOPMENT 06-06 snapshot](https://swift.org/download/#snapshots)
+- Clone the TodoList MySQL repository 
+ 
+  `git clone https://github.com/IBM-Swift/todolist-mysql`
+
 - Install MySQL
 
   `brew install mysql`
