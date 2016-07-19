@@ -1,4 +1,4 @@
-# Todolist (MySQL)
+# TodoList (MySQL)
 MySQL implementation of TodoList
 
 Quick start on MacOS:
