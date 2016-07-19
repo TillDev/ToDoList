@@ -44,7 +44,6 @@ public class TodoList : TodoListAPI {
                 
             )
             connection = try mysql?.makeConnection()
-            
         } catch {
             Log.error("Failed to create a connection to MySQL database")
         }
@@ -61,7 +60,6 @@ public class TodoList : TodoListAPI {
 
             )
             connection = try mysql?.makeConnection()
-            
         } catch {
             Log.error("Failed to create a connection to MySQL database")
         }
@@ -165,7 +163,6 @@ public class TodoList : TodoListAPI {
             
             let todoItem = TodoItem(documentID: withDocumentID, userID: user, order: order, title: title, completed: completedValue)
             oncompletion(todoItem, nil)
-            
         }
         catch {
             Log.error("There was a problem with the MySQL query: \(error)")
