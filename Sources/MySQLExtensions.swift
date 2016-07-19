@@ -10,6 +10,7 @@ import Foundation
 import MySQL
 
 extension MySQL.Value {
+    
     var string: String? {
         guard case .string(let string) = self else {
             return nil

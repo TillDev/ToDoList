@@ -22,14 +22,10 @@ import MySQL
 
 public class TodoList : TodoListAPI {
     
-    // TODO what does static keyword do here?
-    static let defaultHost = "127.0.0.1"  //TODO concat port
-    //static let defaultPort: UInt16 3306?
+    static let defaultHost = "127.0.0.1"
     static let defaultUser = "root"
     static let defaultPassword = ""
     static let defaultDatabase = "todolist"
-    
-    let lastInsertIdQuery = "SELECT LAST_INSERT_ID()"
     
     var mysql: MySQL.Database?
     var connection: Connection?
@@ -45,13 +41,14 @@ public class TodoList : TodoListAPI {
                 user: username,
                 password: password,
                 database: database
+                
             )
             connection = try mysql?.makeConnection()
+            
         } catch {
-            print("Error: \(error)")
+            Log.error("Failed to create a connection to MySQL database")
         }
     }
-    
     
     public init(_ dbConfiguration: DatabaseConfiguration) {
         
@@ -61,17 +58,15 @@ public class TodoList : TodoListAPI {
                 user: dbConfiguration.username!,
                 password: dbConfiguration.password!,
                 database: TodoList.defaultDatabase
+
             )
             connection = try mysql?.makeConnection()
+            
         } catch {
-            print("Error: \(error)")
-            //TODO what do to here?
+            Log.error("Failed to create a connection to MySQL database")
         }
         
     }
-    
-    //TODO hardcoded bool value for completed, since SELECT returns MySQL.Value.null
-    
     
     public func count(withUserID: String?, oncompletion: (Int?, ErrorProtocol?) -> Void) {
         
@@ -85,7 +80,8 @@ public class TodoList : TodoListAPI {
             
         }
         catch {
-            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query"))
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -101,7 +97,8 @@ public class TodoList : TodoListAPI {
             
         }
         catch {
-            oncompletion(TodoCollectionError.CreationError("Problem clearing table entries"))
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -109,14 +106,14 @@ public class TodoList : TodoListAPI {
         
         do {
             let query = "TRUNCATE TABLE todos"
-            
             try mysql?.execute(query)
             
             oncompletion(nil)
             
         }
         catch {
-            oncompletion(TodoCollectionError.CreationError("There was a problem clearing the table"))
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -133,7 +130,8 @@ public class TodoList : TodoListAPI {
             
         }
         catch {
-            oncompletion(nil, TodoCollectionError.CreationError("There was a problem retrieving TODO list items"))
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -146,16 +144,19 @@ public class TodoList : TodoListAPI {
             let results = try mysql?.execute(query)
             
             guard let order = results?[0]["orderno"]?.int else {
+                Log.error("There was a problem with the MySQL query")
                 oncompletion(nil, TodoCollectionError.CreationError("Problem retrieving the TODO list item"))
                 return
             }
             
             guard let title = results?[0]["title"]?.string else {
+                Log.error("There was a problem with the MySQL query")
                 oncompletion(nil, TodoCollectionError.CreationError("Problem retrieving the TODO list item"))
                 return
             }
             
             guard let completed = results?[0]["completed"]?.int else {
+                Log.error("There was a problem with the MySQL query")
                 oncompletion(nil, TodoCollectionError.CreationError("Problem retrieving the TODO list item"))
                 return
             }
@@ -167,7 +168,8 @@ public class TodoList : TodoListAPI {
             
         }
         catch {
-            print("Testing get item failed: \(error)")
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -180,10 +182,9 @@ public class TodoList : TodoListAPI {
             let completedValue = completed ? 1 : 0
             
             let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completedValue), \(order))"
-            
             try mysql?.execute(query, [], connection)
             
-            let result = try mysql?.execute(lastInsertIdQuery, [], connection)
+            let result = try mysql?.execute("SELECT LAST_INSERT_ID()", [], connection)
             
             guard result?.count == 1 else {
                 oncompletion(nil, TodoCollectionError.IDNotFound("There was a problem adding a TODO item"))
@@ -201,8 +202,8 @@ public class TodoList : TodoListAPI {
         }
             
         catch {
-            oncompletion(nil, TodoCollectionError.CreationError("There was a problem adding a TODO item"))
-            return
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -243,12 +244,10 @@ public class TodoList : TodoListAPI {
             completedQuery = " completed=\(completedValue),"
         }
         
-        var concatString = titleQuery + orderQuery + completedQuery
-        
-        let query = "UPDATE todos SET" + String(concatString.characters.dropLast()) + " WHERE tid=\"\(documentID)\""
+        var concatQuery = titleQuery + orderQuery + completedQuery
         
         do {
-            
+            let query = "UPDATE todos SET" + String(concatQuery.characters.dropLast()) + " WHERE tid=\"\(documentID)\""
             try mysql?.execute(query, [], connection)
             
             let todoItem = TodoItem(documentID: String(documentID), userID: user, order: finalOrder, title: finalTitle, completed: finalCompleted)
@@ -256,8 +255,8 @@ public class TodoList : TodoListAPI {
             
         }
         catch {
-            oncompletion(nil, TodoCollectionError.CreationError("There was a problem adding a TODO item"))
-            return
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
     }
     
@@ -266,19 +265,16 @@ public class TodoList : TodoListAPI {
         let user = withUserID ?? "default"
         
         do {
-            
             let query = "DELETE FROM todos WHERE owner_id=\"\(user)\" AND tid=\"\(withDocumentID)\""
-            
             try mysql?.execute(query, [], connection)
             
             oncompletion(nil)
-        }
             
-        catch {
-            oncompletion(TodoCollectionError.IDNotFound("There was a problem deleting the TODO item"))
-            return
         }
-        
+        catch {
+            Log.error("There was a problem with the MySQL query: \(error)")
+            oncompletion(TodoCollectionError.IDNotFound("There was a problem with the MySQL query: \(error)"))
+        }
     }
     
     private func parseTodoItemList(results: [[String : MySQL.Value]]) throws -> [TodoItem] {
@@ -286,8 +282,8 @@ public class TodoList : TodoListAPI {
         var todos = [TodoItem]()
         for entry in results {
             
-            let test: TodoItem = try createTodoItem(entry: entry)
-            todos.append(test)
+            let item: TodoItem = try createTodoItem(entry: entry)
+            todos.append(item)
             
         }
         return todos
@@ -315,7 +311,7 @@ public class TodoList : TodoListAPI {
                 continue
             }
             if key == "completed" {
-                completed = 0 //value.int! //TODO what's up here?
+                completed = value.int!
                 continue
             }
         }
@@ -326,7 +322,6 @@ public class TodoList : TodoListAPI {
         return todoItem
         
     }
-    
 }
 
 

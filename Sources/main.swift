@@ -23,10 +23,7 @@ import TodoListWeb
 import CloudFoundryEnv
 import TodoListAPI
 
-
 Log.logger = HeliumLogger()
-
-
 
 extension DatabaseConfiguration {
     
@@ -40,7 +37,7 @@ extension DatabaseConfiguration {
             self.host = "127.0.0.1"
             self.username = "root"
             self.password = ""
-            self.port = nil   //UInt16(5984)
+            self.port = UInt16(3306)
         }
         self.options = ["test" : "test"]
     }
@@ -70,5 +67,3 @@ do {
 } catch CloudFoundryEnvError.InvalidValue {
     Log.error("Oops... something went wrong. Server did not start.")
 }
-//Server.run()
-//Log.info("Server started on \(config.url).")
