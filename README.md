@@ -28,7 +28,9 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
  `mysql -u root -p`
 
   ```sql 
-  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)
+  CREATE DATABASE todolist;
+  USE todolist;
+  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);
   ```
 
 ## Compile and run tests:
