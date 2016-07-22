@@ -1,9 +1,12 @@
-# TodoList (MySQL)
-MySQL implementation of TodoList
+# TodoList MySQL
 
-Quick start for developing locally on MacOS:
+[![Swift 3 6-06](https://img.shields.io/badge/Swift%203-6/20 SNAPSHOT-blue.svg)](https://swift.org/download/#snapshots)
 
-- Download the [Swift DEVELOPMENT 06-06 snapshot](https://swift.org/download/#snapshots)
+A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-boilerplate)
+
+## Quick start for developing locally on macOS:
+
+- Download the [Swift DEVELOPMENT 06-20 snapshot](https://swift.org/download/#snapshots)
 - Clone the TodoList MySQL repository 
  
   `git clone https://github.com/IBM-Swift/todolist-mysql`
@@ -22,7 +25,9 @@ Quick start for developing locally on MacOS:
 
 - Create your database table
 
-  `CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)`
+  ```sql 
+  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)
+  ```
 
 ## Compile and run tests:
 
