@@ -23,7 +23,9 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 -I tells the compiler where to find the MySQL header files, and -L tells the linker where to find the library. This is required to compile and run on macOS.
 
-- Create your database table
+- Create your database table:
+
+ `mysql -u root -p`
 
   ```sql 
   CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)
