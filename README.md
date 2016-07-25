@@ -36,8 +36,6 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   ```
  
 
-- Clone the TodoList-MySQL repository
-
 ## Compile and run tests:
 
 1. Clone the Tests to your project:
