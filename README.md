@@ -13,9 +13,11 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 - Install MySQL
 
-  `brew install mysql`
-  `brew link mysql`
-  `mysql.server start`
+  ```
+  brew install mysql
+  brew link mysql
+  mysql.server start
+  ```
   
 - Link MySQL during swift build
 
