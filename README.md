@@ -1,5 +1,6 @@
 # TodoList MySQL
 
+[![Build Status](https://travis-ci.org/IBM-Swift/TodoList-MySQL.svg?branch=master)](https://travis-ci.org/IBM-Swift/TodoList-MySQL)
 [![Swift 3 6-06](https://img.shields.io/badge/Swift%203-6/20 SNAPSHOT-blue.svg)](https://swift.org/download/#snapshots)
 
 A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-boilerplate)
