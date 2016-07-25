@@ -34,6 +34,9 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   USE todolist;
   CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);
   ```
+ 
+
+- Clone the TodoList-MySQL repository
 
 ## Compile and run tests:
 
