@@ -35,6 +35,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);
   ```
  
+- Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
 
 ## Compile and run tests:
 
