@@ -11,7 +11,7 @@ before_install:
   - sudo apt-get -y install clang libicu-dev libkqueue-dev libtool libcurl4-openssl-dev libbsd-dev libblocksruntime-dev mysql-server
   - git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh autogen.sh && ./configure --with-swift-toolchain=${PWD}/../swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04/usr --prefix=${PWD}/../swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04/usr && make && make install && cd ..
   - mysql -e "create database IF NOT EXISTS todolist;" -uroot
-  - git clone https://github.com/IBM-Swift/todolist-tests
+  - git clone https://github.com/IBM-Swift/todolist-tests Tests
   
 script:
   - swift build -Xswiftc -I/usr/local/include/mysql -Xlinker -L/usr/local/lib -Xcc -fblocks
