@@ -39,7 +39,7 @@ extension DatabaseConfiguration {
             self.password = ""
             self.port = UInt16(3306)
         }
-        self.options = ["test" : "test"]
+        self.options = [String : AnyObject]()
     }
 }
 
