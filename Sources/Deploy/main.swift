@@ -23,6 +23,8 @@ import TodoListWeb
 import CloudFoundryEnv
 import TodoListAPI
 
+import TodoList
+
 Log.logger = HeliumLogger()
 setbuf(stdout, nil)
 
