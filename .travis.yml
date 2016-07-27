@@ -10,7 +10,8 @@ before_install:
   - export PATH=swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04/usr/bin:$PATH
   - sudo apt-get -y install clang libicu-dev libkqueue-dev libtool libcurl4-openssl-dev libbsd-dev libblocksruntime-dev mysql-server
   - git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh autogen.sh && ./configure --with-swift-toolchain=${PWD}/../swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04/usr --prefix=${PWD}/../swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04/usr && make && make install && cd ..
-  - mysql -u root todolist < Sources/schema.sql
+  - mysql -e "create database IF NOT EXISTS todolist;" -uroot
+  - mysql -e "CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)" -uroot
   - git clone https://github.com/IBM-Swift/todolist-tests Tests
   
 script:
