@@ -12,7 +12,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
  
   `git clone https://github.com/IBM-Swift/todolist-mysql`
 
-- Install MySQL
+- Install and start MySQL
 
   ```
   brew install mysql
@@ -37,6 +37,15 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   ```
  
 - Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
+
+## Setup MySQL service in Bluemix
+
+1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
+2. Open the Bluemix catalog 
+
+## Deploying to Bluemix
+
+1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
 
 ## Compile and run tests:
 
