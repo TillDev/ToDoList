@@ -40,9 +40,12 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 ## Setup MySQL service in Bluemix
 
+1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
+2. Open the Bluemix catalog 
+
 ## Deploying to Bluemix
 
-1. Get an account for [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
+1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
 
 ## Compile and run tests:
 
