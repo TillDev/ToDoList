@@ -20,11 +20,11 @@ let package = Package(
     name: "TodoList",
     targets: [
         Target(
-            name: "TodoList",
-            dependencies: [.Target(name: "MySQLAdapter")]
+            name: "Deploy",
+            dependencies: [.Target(name: "TodoList")]
         ),
         Target(
-            name: "MySQLAdapter"
+            name: "TodoList"
         )
     ],
     dependencies: [

@@ -22,7 +22,8 @@ import LoggerAPI
 import TodoListWeb
 import CloudFoundryEnv
 import TodoListAPI
-import MySQLAdapter
+
+import TodoList
 
 Log.logger = HeliumLogger()
 setbuf(stdout, nil)
