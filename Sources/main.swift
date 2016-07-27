@@ -24,33 +24,34 @@ import CloudFoundryEnv
 import TodoListAPI
 
 Log.logger = HeliumLogger()
+setbuf(stdout, nil)
 
-extension DatabaseConfiguration {
-    
-    init(withService: Service) {
-        if let credentials = withService.credentials{
-            self.host = credentials["host"].stringValue
-            self.username = credentials["username"].stringValue
-            self.password = credentials["password"].stringValue
-            self.port = UInt16(credentials["port"].stringValue)!
-        } else {
-            self.host = "127.0.0.1"
-            self.username = "root"
-            self.password = ""
-            self.port = UInt16(3306)
-        }
-        self.options = ["test" : "test"]
-    }
-}
-
-let databaseConfiguration: DatabaseConfiguration
 let todos: TodoList
 
 do {
     if let service = try CloudFoundryEnv.getAppEnv().getService(spec: "TodoList-MySQL"){
+        
+        let host: String, username: String, password: String, port: UInt16, database: String
+        
+        if let credentials = service.credentials{
+            host = credentials["hostname"].stringValue
+            username = credentials["username"].stringValue
+            password = credentials["password"].stringValue
+            port = UInt16(credentials["port"].stringValue)!
+            database = credentials["name"].stringValue
+            
+        } else {
+            host = "127.0.0.1"
+            username = "root"
+            password = ""
+            port = UInt16(3306)
+            database = "todolist"
+            
+        }
+        let options = [String : AnyObject]()
+        
         Log.verbose("Found TodoList-MySQL")
-        databaseConfiguration = DatabaseConfiguration(withService: service)
-        todos = TodoList(databaseConfiguration)
+        todos = TodoList(database: database, host: host, username: username, password: password)
     } else {
         Log.info("Could not find Bluemix MySQL service")
         todos = TodoList()
