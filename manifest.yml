@@ -1,0 +1,12 @@
+declared-services:
+  TodoList-MySQL:
+    label: cleardb
+    plan: spark
+applications:
+- name: TodoList-MySQL
+  memory: 256M
+  instances: 2
+  random-route: true
+  services:
+  - TodoList-MySQL
+  buildpack: https://github.com/IBM-Swift/swift-buildpack.git#develop
