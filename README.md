@@ -38,7 +38,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
  
 - Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
 
-## Setup MySQL service in Bluemix
+## Setup MySQL service and database table in Bluemix
 
 1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary)  
 2. Open the Bluemix catalog by clicking the blue hexagon '+' icon
@@ -49,7 +49,23 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   ![MySQL service](Images/spark-plan.png)
   You will now have a provisioned ClearDB MySQL Database in your services.
   ![MySQL service](Images/provisioned-cleardb.png)
-5. 
+5. Click “open ClearDB MySQL Database dashboard”
+  ![MySQL service](Images/cleardb-dashboard.png)
+6. You now need to create your new todos table in the default database that was automatically created for you.  Open the database and navigate to the “Endpoint Information” tab to find your credentials. Note your hostname, username and password.
+  ![MySQL service](Images/cleardb-creds.png)
+7. Create your database table from the command line with the following commands:
+
+  ```
+  mysql -u <username> -p -h <hostname>
+  ```
+You’ll be prompted for your password
+  ```
+  show databases;
+  use <your database>;
+  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);
+  ```
+  ![MySQL service](Images/command-line-create-table.png)
+
 ## Deploying to Bluemix
 
 1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary)  
