@@ -18,6 +18,15 @@ import PackageDescription
 
 let package = Package(
     name: "TodoList",
+    targets: [
+        Target(
+            name: "TodoList",
+            dependencies: [.Target(name: "MySQLAdapter")]
+        ),
+        Target(
+            name: "MySQLAdapter"
+        )
+    ],
     dependencies: [
         .Package(url: "https://github.com/IBM-Swift/Kitura.git",        majorVersion: 0, minor: 22),
         .Package(url: "https://github.com/IBM-Swift/HeliumLogger.git",  majorVersion: 0, minor: 12),
