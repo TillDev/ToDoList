@@ -40,12 +40,19 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 ## Setup MySQL service in Bluemix
 
-1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
-2. Open the Bluemix catalog 
-
+1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary)  
+2. Open the Bluemix catalog by clicking the blue hexagon '+' icon
+  ![MySQL service](Images/bluemix-console.png)
+3. Search for "MySQL" and open the ClearDB MySQL Database
+  ![MySQL service](Images/search-mysql.png)
+4. Select the (free) Spark DB plan and click the Create button. 
+  ![MySQL service](Images/spark-plan.png)
+  You will now have a provisioned ClearDB MySQL Database in your services.
+  ![MySQL service](Images/provisioned-cleardb.png)
+5. 
 ## Deploying to Bluemix
 
-1. Login to your Bluemix account (create an account, if necessary)  [Bluemix](https://new-console.ng.bluemix.net/?direct=classic)
+1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary)  
 
 ## Compile and run tests:
 
