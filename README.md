@@ -1,5 +1,6 @@
 # TodoList MySQL
 
+[![Build Status](https://travis-ci.org/IBM-Swift/TodoList-MySQL.svg?branch=master)](https://travis-ci.org/IBM-Swift/TodoList-MySQL)
 [![Swift 3 6-06](https://img.shields.io/badge/Swift%203-6/20 SNAPSHOT-blue.svg)](https://swift.org/download/#snapshots)
 
 A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-boilerplate)
@@ -13,9 +14,11 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 - Install MySQL
 
-  `brew install mysql`
-  `brew link mysql`
-  `mysql.server start`
+  ```
+  brew install mysql
+  brew link mysql
+  mysql.server start
+  ```
   
 - Link MySQL during swift build
 
@@ -23,11 +26,17 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 -I tells the compiler where to find the MySQL header files, and -L tells the linker where to find the library. This is required to compile and run on macOS.
 
-- Create your database table
+- Create your database table:
+
+ `mysql -u root -p`
 
   ```sql 
-  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT)
+  CREATE DATABASE todolist;
+  USE todolist;
+  CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);
   ```
+ 
+- Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
 
 ## Compile and run tests:
 
