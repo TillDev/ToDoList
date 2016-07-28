@@ -6,16 +6,16 @@
 
 ## Table of Contents
 * [Summary](#summary)
-* [Quick start](#quick-start)
-* [Setup MySQL service](#setup-mysql-service)
+* [Quick start](#quick-start-on-macos)
+* [Setup MySQL service](#setup-mysql-service-in-bluemix)
 * [Deploy to Bluemix](#deploy-to-bluemix)
-* [Test](#test)
+* [Compile and run tests](#compile-and-run-tests)
 
 ## Summary
 
 A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-boilerplate)
 
-## Quick start for developing locally on macOS:
+## Quick start on macOS:
 
 1. Download the [Swift DEVELOPMENT 06-20 snapshot](https://swift.org/download/#snapshots)
 2. Clone the TodoList MySQL repository 
@@ -48,7 +48,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
  
 5. Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
 
-## Setup MySQL service and database table in Bluemix
+## Setup MySQL service in Bluemix
 
 1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary)  
 
@@ -82,7 +82,7 @@ You’ll be prompted for your password
   ```
   ![MySQL service](Images/command-line-create-table.png)
 
-## Deploying to Bluemix
+## Deploy to Bluemix
 
 1. Login to your [Bluemix](https://new-console.ng.bluemix.net/?direct=classic) account (create an account, if necessary) 
 
