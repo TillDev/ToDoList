@@ -93,7 +93,7 @@ bluemix api https://api.ng.bluemix.net
 bluemix login -u username -o org_name -s space_name
 ```
 
-    Be sure to change the directory to the todolist-mongodb directory where the manifest.yml file is located.
+    Be sure to change the directory to the todolist-mysql directory where the manifest.yml file is located.
 
 3. Run `cf push`
 
