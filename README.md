@@ -3,6 +3,16 @@
 [![Build Status](https://travis-ci.org/IBM-Swift/TodoList-MySQL.svg?branch=master)](https://travis-ci.org/IBM-Swift/TodoList-MySQL)
 [![Swift 3 6-06](https://img.shields.io/badge/Swift%203-6/20 SNAPSHOT-blue.svg)](https://swift.org/download/#snapshots)
 
+
+## Table of Contents
+* [Summary](#summary)
+* [Quick start](#quick-start)
+* [Setup MySQL service](#setup-mysql-service)
+* [Deploy to Bluemix](#deploy-to-bluemix)
+* [Test](#test)
+
+## Summary
+
 A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-boilerplate)
 
 ## Quick start for developing locally on macOS:
