@@ -29,13 +29,7 @@ public class TodoList : TodoListAPI {
     static let defaultPassword = ""
     static let defaultDatabase = "todolist"
     
-    private let racePrevention = DispatchSemaphore( value: 0 )
-    
-    private func oneAtATime(_ fn: () -> Void) {
-        defer { racePrevention.signal() }
-        racePrevention.wait()
-        fn()
-    }
+   
     
     private let queue = DispatchQueue(label: "database queue",
                                       attributes: .concurrent)
@@ -102,14 +96,10 @@ public class TodoList : TodoListAPI {
         
         do {
             let query = "DELETE FROM todos WHERE owner_id=\"\(user)\""
-            
-            oneAtATime {
-                self.queue.async {
-                    try! self.getDatabase().0?.execute(query)
-                    oncompletion(nil)
-                }
-            }
-            
+        
+            try self.getDatabase().0?.execute(query)
+            oncompletion(nil)
+      
         }
         catch {
             Log.error("There was a problem with the MySQL query: \(error)")
@@ -218,7 +208,6 @@ public class TodoList : TodoListAPI {
             }
             let todoItem = TodoItem(documentID: String(documentID), userID: user, order: order, title: title, completed: completed)
             
-           
             oncompletion(todoItem, nil)
            
         }
