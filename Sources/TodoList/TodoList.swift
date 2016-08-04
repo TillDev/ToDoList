@@ -19,6 +19,7 @@ import TodoListAPI
 import LoggerAPI
 import SwiftyJSON
 import MySQL
+import Dispatch
 
 public class TodoList : TodoListAPI {
     
@@ -28,10 +29,22 @@ public class TodoList : TodoListAPI {
     static let defaultPassword = ""
     static let defaultDatabase = "todolist"
     
+    private let racePrevention = DispatchSemaphore( value: 0 )
+    
+    private func oneAtATime(_ fn: () -> Void) {
+        defer { racePrevention.signal() }
+        racePrevention.wait()
+        fn()
+    }
+    
+    private let queue = DispatchQueue(label: "database queue",
+                                      attributes: .concurrent)
+                                    
+    
     let database: String, host: String, username: String, password: String
     
     public init(database: String = TodoList.defaultDatabase,
-                host: String = TodoList.defaultHost,
+                host:     String = TodoList.defaultHost,
                 username: String = TodoList.defaultUser,
                 password: String = TodoList.defaultPassword) {
         
@@ -56,8 +69,8 @@ public class TodoList : TodoListAPI {
         
         do{
             let mysql = try MySQL.Database(
-                host: self.host,
-                user: self.username,
+                host:     self.host,
+                user:     self.username,
                 password: self.password,
                 database: self.database
             )
@@ -89,8 +102,13 @@ public class TodoList : TodoListAPI {
         
         do {
             let query = "DELETE FROM todos WHERE owner_id=\"\(user)\""
-            try getDatabase().0?.execute(query)
-            oncompletion(nil)
+            
+            oneAtATime {
+                self.queue.async {
+                    try! self.getDatabase().0?.execute(query)
+                    oncompletion(nil)
+                }
+            }
             
         }
         catch {
@@ -132,9 +150,13 @@ public class TodoList : TodoListAPI {
     public func get(withUserID: String?, withDocumentID: String, oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
         let user = withUserID ?? "default"
         
+            
         do {
             let query = "SELECT * FROM todos WHERE owner_id=\"\(user)\" AND tid=\"\(withDocumentID)\""
-            let results = try getDatabase().0?.execute(query)
+            
+            
+            let results = try self.getDatabase().0?.execute(query)
+            
             
             guard let order = results?[0]["orderno"]?.int else {
                 Log.error("There was a problem with the MySQL query")
@@ -162,11 +184,14 @@ public class TodoList : TodoListAPI {
             Log.error("There was a problem with the MySQL query: \(error)")
             oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
+        
     }
     
     public func add(userID: String?, title: String, order: Int, completed: Bool,
                     oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
   
+   
+                
         let user = userID ?? "default"
         
         do {
@@ -174,7 +199,9 @@ public class TodoList : TodoListAPI {
             
             let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completedValue), \(order))"
             
-            let dbConnection = try getDatabase()
+            let dbConnection = try self.getDatabase()
+            
+            
             try dbConnection.0?.execute(query, [], dbConnection.1)
             
             let result = try dbConnection.0?.execute("SELECT LAST_INSERT_ID()", [], dbConnection.1)
@@ -190,13 +217,17 @@ public class TodoList : TodoListAPI {
                     return
             }
             let todoItem = TodoItem(documentID: String(documentID), userID: user, order: order, title: title, completed: completed)
+            
+           
             oncompletion(todoItem, nil)
+           
         }
             
         catch {
             Log.error("There was a problem with the MySQL query: \(error)")
             oncompletion(nil, TodoCollectionError.CreationError("There was a problem with the MySQL query: \(error)"))
         }
+     
     }
     
     public func update(documentID: String, userID: String?, title: String?, order: Int?,
@@ -237,10 +268,13 @@ public class TodoList : TodoListAPI {
                 let query = "UPDATE todos SET" + String(concatQuery.characters.dropLast()) + " WHERE tid=\"\(documentID)\""
                 
                 let dbConnection = try self.getDatabase()
-                try dbConnection.0?.execute(query, [], dbConnection.1)
+                
+                self.queue.sync {
+                try! dbConnection.0?.execute(query, [], dbConnection.1)
                 
                 let todoItem = TodoItem(documentID: String(documentID), userID: user, order: finalOrder, title: finalTitle, completed: finalCompleted)
                 oncompletion(todoItem, nil)
+                }
                 
             }
             catch {
