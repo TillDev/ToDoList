@@ -28,13 +28,7 @@ public class TodoList : TodoListAPI {
     static let defaultUser = "root"
     static let defaultPassword = ""
     static let defaultDatabase = "todolist"
-    
-   
-    
-    private let queue = DispatchQueue(label: "database queue",
-                                      attributes: .concurrent)
-                                    
-    
+
     let database: String, host: String, username: String, password: String
     
     public init(database: String = TodoList.defaultDatabase,
@@ -258,12 +252,11 @@ public class TodoList : TodoListAPI {
                 
                 let dbConnection = try self.getDatabase()
                 
-                self.queue.sync {
                 try! dbConnection.0?.execute(query, [], dbConnection.1)
                 
                 let todoItem = TodoItem(documentID: String(documentID), userID: user, order: finalOrder, title: finalTitle, completed: finalCompleted)
                 oncompletion(todoItem, nil)
-                }
+            
                 
             }
             catch {
