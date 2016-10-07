@@ -15,38 +15,20 @@
  **/
 
 import Foundation
-import MySQL
 
-extension MySQL.Value {
-    var string: String? {
-        guard case .string(let string) = self else {
-            return nil
-        }
-        
-        return string
+public struct DatabaseConfiguration {
+
+    public var host: String?
+    public var port: UInt16?
+    public var username: String?
+    public var password: String?
+    public var options = [String: Any]()
+
+    public init(host: String?, port: UInt16?, username: String?, password: String?) {
+        self.host = host
+        self.port = port
+        self.username = username
+        self.password = password
     }
-    
-    var int: Int? {
-        guard case .int(let int) = self else {
-            return nil
-        }
-        
-        return int
-    }
-    
-    var double: Double? {
-        guard case .double(let double) = self else {
-            return nil
-        }
-        
-        return double
-    }
-    
-    var uint: UInt? {
-        guard case .uint(let uint) = self else {
-            return nil
-        }
-        
-        return uint
-    }
+
 }

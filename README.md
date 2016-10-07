@@ -1,7 +1,8 @@
 # TodoList MySQL
 
 [![Build Status](https://travis-ci.org/IBM-Swift/TodoList-MySQL.svg?branch=master)](https://travis-ci.org/IBM-Swift/TodoList-MySQL)
-[![Swift 3 6-06](https://img.shields.io/badge/Swift%203-6/20 SNAPSHOT-blue.svg)](https://swift.org/download/#snapshots)
+![](https://img.shields.io/badge/Swift-3.0%20RELEASE-orange.svg?style=flat)
+![](https://img.shields.io/badge/platform-Linux,%20macOS-blue.svg?style=flat)
 
 
 ## Table of Contents
@@ -17,7 +18,6 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 ## Quick start on macOS:
 
-1. Download the [Swift DEVELOPMENT 06-20 snapshot](https://swift.org/download/#snapshots)
 2. Clone the TodoList MySQL repository 
  
   `git clone https://github.com/IBM-Swift/todolist-mysql`
@@ -32,7 +32,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
   
 4. Link MySQL during swift build
 
-  `swift build -Xswiftc -I/usr/local/include/mysql -Xlinker -L/usr/local/lib`
+  `swift build -Xswiftc -I/usr/local/include/mysql -Xlinker -L/usr/local/lib -Xswiftc -DNOJSON` 
 
 -I tells the compiler where to find the MySQL header files, and -L tells the linker where to find the library. This is required to compile and run on macOS.
 
@@ -113,7 +113,6 @@ App started
 2. Build the project: 
 
   `swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib`
-
 3. Run the tests:
 
   `swift test`

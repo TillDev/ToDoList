@@ -3,3 +3,4 @@
 /TodoList.xcodeproj
 /Tests
 *.DS_Store
+*.xcworkspace

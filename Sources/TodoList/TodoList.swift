@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import TodoListAPI
 import LoggerAPI
 import SwiftyJSON
 import MySQL
@@ -70,7 +69,7 @@ public class TodoList : TodoListAPI {
         return (nil, nil)
     }
     
-    public func count(withUserID: String?, oncompletion: (Int?, ErrorProtocol?) -> Void) {
+    public func count(withUserID: String?, oncompletion: @escaping(Int?, Swift.Error?) -> Void) {
         let user = withUserID ?? "default"
         
         do {
@@ -85,7 +84,7 @@ public class TodoList : TodoListAPI {
         }
     }
     
-    public func clear(withUserID: String?, oncompletion: (ErrorProtocol?) -> Void) {
+    public func clear(withUserID: String?, oncompletion: @escaping(Swift.Error?) -> Void) {
         let user = withUserID ?? "default"
         
         do {
@@ -101,7 +100,7 @@ public class TodoList : TodoListAPI {
         }
     }
     
-    public func clearAll(oncompletion: (ErrorProtocol?) -> Void) {
+    public func clearAll(oncompletion: @escaping(Swift.Error?) -> Void) {
         do {
             let query = "TRUNCATE TABLE todos"
             try getDatabase().0?.execute(query)
@@ -114,7 +113,7 @@ public class TodoList : TodoListAPI {
         }
     }
     
-    public func get(withUserID: String?, oncompletion: ([TodoItem]?, ErrorProtocol?) -> Void) {
+    public func get(withUserID: String?, oncompletion: @escaping([TodoItem]?, Swift.Error?) -> Void) {
         let user = withUserID ?? "default"
         
         do {
@@ -131,7 +130,7 @@ public class TodoList : TodoListAPI {
         }
     }
     
-    public func get(withUserID: String?, withDocumentID: String, oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
+    public func get(withUserID: String?, withDocumentID: String, oncompletion: @escaping(TodoItem?, Swift.Error?) -> Void ) {
         let user = withUserID ?? "default"
         
             
@@ -142,7 +141,7 @@ public class TodoList : TodoListAPI {
             let results = try self.getDatabase().0?.execute(query)
             
             
-            guard let order = results?[0]["orderno"]?.int else {
+            guard let rank = results?[0]["orderno"]?.int else {
                 Log.error("There was a problem with the MySQL query")
                 oncompletion(nil, TodoCollectionError.CreationError("Problem retrieving the TODO list item"))
                 return
@@ -162,7 +161,7 @@ public class TodoList : TodoListAPI {
             
             let completedValue = completed == 1 ? true : false
             
-            oncompletion(TodoItem(documentID: withDocumentID, userID: user, order: order, title: title, completed: completedValue), nil)
+            oncompletion(TodoItem(documentID: withDocumentID, userID: user, rank: rank, title: title, completed: completedValue), nil)
         }
         catch {
             Log.error("There was a problem with the MySQL query: \(error)")
@@ -171,8 +170,8 @@ public class TodoList : TodoListAPI {
         
     }
     
-    public func add(userID: String?, title: String, order: Int, completed: Bool,
-                    oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
+    public func add(userID: String?, title: String, rank: Int, completed: Bool,
+                    oncompletion: @escaping(TodoItem?, Swift.Error?) -> Void ) {
   
    
                 
@@ -181,7 +180,7 @@ public class TodoList : TodoListAPI {
         do {
             let completedValue = completed ? 1 : 0
             
-            let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completedValue), \(order))"
+            let query = "INSERT INTO todos (title, owner_id, completed, orderno) VALUES ( \"\(title)\", \"\(user)\", \(completedValue), \(rank))"
             
             let dbConnection = try self.getDatabase()
             
@@ -195,12 +194,11 @@ public class TodoList : TodoListAPI {
                 return
             }
             
-            guard let documentID = (result?[0]["LAST_INSERT_ID()"])?.int
-                where documentID > 0 else {
+            guard let documentID = (result?[0]["LAST_INSERT_ID()"])?.int, documentID > 0 else {
                     oncompletion(nil, TodoCollectionError.IDNotFound("There was a problem adding a TODO item"))
                     return
             }
-            let todoItem = TodoItem(documentID: String(documentID), userID: user, order: order, title: title, completed: completed)
+            let todoItem = TodoItem(documentID: String(documentID), userID: user, rank: rank, title: title, completed: completed)
             
             oncompletion(todoItem, nil)
            
@@ -213,8 +211,8 @@ public class TodoList : TodoListAPI {
      
     }
     
-    public func update(documentID: String, userID: String?, title: String?, order: Int?,
-                       completed: Bool?, oncompletion: (TodoItem?, ErrorProtocol?) -> Void ) {
+    public func update(documentID: String, userID: String?, title: String?, rank: Int?,
+                       completed: Bool?, oncompletion: @escaping(TodoItem?, Swift.Error?) -> Void ) {
         let user = userID ?? "default"
         
         var originalTitle: String = "", originalOrder: Int = 0, originalCompleted: Bool = false
@@ -225,7 +223,7 @@ public class TodoList : TodoListAPI {
             
             if let todo = todo {
                 originalTitle = todo.title
-                originalOrder = todo.order
+                originalOrder = todo.rank
                 originalCompleted = todo.completed
             }
             
@@ -234,8 +232,8 @@ public class TodoList : TodoListAPI {
                 titleQuery = " title=\"\(finalTitle)\","
             }
             
-            let finalOrder = order ?? originalOrder
-            if (order != nil) {
+            let finalOrder = rank ?? originalOrder
+            if (rank != nil) {
                 orderQuery = " orderno=\(finalOrder),"
             }
             
@@ -254,7 +252,7 @@ public class TodoList : TodoListAPI {
                 
                 try! dbConnection.0?.execute(query, [], dbConnection.1)
                 
-                let todoItem = TodoItem(documentID: String(documentID), userID: user, order: finalOrder, title: finalTitle, completed: finalCompleted)
+                let todoItem = TodoItem(documentID: String(documentID), userID: user, rank: finalOrder, title: finalTitle, completed: finalCompleted)
                 oncompletion(todoItem, nil)
             
                 
@@ -266,7 +264,7 @@ public class TodoList : TodoListAPI {
         }
     }
     
-    public func delete(withUserID: String?, withDocumentID: String, oncompletion: (ErrorProtocol?) -> Void) {
+    public func delete(withUserID: String?, withDocumentID: String, oncompletion: @escaping(Swift.Error?) -> Void) {
         let user = withUserID ?? "default"
         
         do {
@@ -284,7 +282,7 @@ public class TodoList : TodoListAPI {
     }
     
     
-    private func parseTodoItemList(results: [[String : MySQL.Value]]) throws -> [TodoItem] {
+    private func parseTodoItemList(results: [[String : Node]]) throws -> [TodoItem] {
 
         var todos = [TodoItem]()
         for entry in results {
@@ -295,7 +293,7 @@ public class TodoList : TodoListAPI {
         return todos
     }
     
-    private func createTodoItem(entry: [String : MySQL.Value]) throws -> TodoItem {
+    private func createTodoItem(entry: [String : Node]) throws -> TodoItem {
       
         var tid: Int = 0, user: String = "", title: String = "", orderno: Int = 0, completed: Int = 0
         for(key, value) in entry {
@@ -323,8 +321,9 @@ public class TodoList : TodoListAPI {
         }
         let completedValue = completed == 1 ? true : false
         
-        let todoItem = TodoItem(documentID: String(tid), userID: user, order: orderno, title: title, completed: completedValue)
+        let todoItem = TodoItem(documentID: String(tid), userID: user, rank: orderno, title: title, completed: completedValue)
         return todoItem
         
     }
+    
 }
