@@ -1,6 +1,5 @@
 /.build
 /Packages
 /TodoList.xcodeproj
-/Tests
 *.DS_Store
 *.xcworkspace

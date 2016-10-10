@@ -13,5 +13,5 @@ before_install:
   - mysql -e "CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);" -uroot todolist
   
 script:
-  - swift build -Xswiftc -DNOJSON
-
+  - swift build -Xswiftc -I/usr/local/include/mysql -Xlinker -L/usr/local/lib -Xswiftc -DNOJSON
+  - swift test -Xswiftc -I/usr/local/include/mysql -Xlinker -L/usr/local/lib -Xswiftc -DNOJSON
