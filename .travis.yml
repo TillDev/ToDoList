@@ -5,10 +5,10 @@ services:
   - mysql
 
 before_install:
-  - wget https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu14.04.tar.gz 
-  - tar xzvf swift-3.0-RELEASE-ubuntu14.04.tar.gz
-  - export PATH=swift-3.0-RELEASE-ubuntu14.04/usr/bin:$PATH
-  - sudo apt-get -y install clang-3.8 lldb-3.8 mysql-server libmysqlclient-dev
+  - wget https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0.2-RELEASE/swift-3.0.2-RELEASE-ubuntu14.04.tar.gz 
+  - tar xzvf swift-3.0.2-RELEASE-ubuntu14.04.tar.gz
+  - export PATH=swift-3.0.2-RELEASE-ubuntu14.04/usr/bin:$PATH
+  - sudo apt-get -y install clang-3.8 lldb-3.8 mysql-server libmysqlclient-dev mysql-server-5.5
   - mysql -e "create database IF NOT EXISTS todolist;" -uroot
   - mysql -e "CREATE TABLE todos (tid INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title TEXT, owner_id VARCHAR(256), completed INT, orderno INT);" -uroot todolist
   
