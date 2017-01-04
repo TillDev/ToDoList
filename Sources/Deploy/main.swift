@@ -33,11 +33,11 @@ do {
         let host: String, username: String, password: String, port: UInt16, database: String
         
         if let credentials = service.credentials{
-            host = credentials["hostname"].stringValue
-            username = credentials["username"].stringValue
-            password = credentials["password"].stringValue
-            port = UInt16(credentials["port"].stringValue)!
-            database = credentials["name"].stringValue
+            host = credentials["hostname"] as! String
+            username = credentials["username"] as! String
+            password = credentials["password"] as! String
+            port = UInt16(credentials["port"] as! String)!
+            database = credentials["name"] as! String
             
         } else {
             host = "127.0.0.1"

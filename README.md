@@ -1,7 +1,7 @@
 # TodoList MySQL
 
 [![Build Status](https://travis-ci.org/IBM-Swift/TodoList-MySQL.svg?branch=master)](https://travis-ci.org/IBM-Swift/TodoList-MySQL)
-![](https://img.shields.io/badge/Swift-3.0%20RELEASE-orange.svg?style=flat)
+![](https://img.shields.io/badge/Swift-3.0.2%20RELEASE-orange.svg?style=flat)
 ![](https://img.shields.io/badge/platform-Linux,%20macOS-blue.svg?style=flat)
 
 
