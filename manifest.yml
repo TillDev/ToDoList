@@ -5,8 +5,8 @@ declared-services:
 applications:
 - name: TodoList-MySQL
   memory: 256M
-  instances: 2
+  instances: 1
   random-route: true
+  command: Server
   services:
   - TodoList-MySQL
-  buildpack: https://github.com/dfirsht/swift-buildpack

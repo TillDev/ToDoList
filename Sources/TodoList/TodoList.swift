@@ -118,10 +118,12 @@ public class TodoList : TodoListAPI {
         
         do {
             let query = "SELECT * FROM todos WHERE owner_id=\"\(user)\""
-            let results = try getDatabase().0?.execute(query)
-            
-            let todos = try parseTodoItemList(results: results!)
-            oncompletion(todos, nil)
+            if let results = try getDatabase().0?.execute(query) {
+                let todos = try parseTodoItemList(results: results)
+                oncompletion(todos, nil)
+            } else {
+                oncompletion(nil, nil)
+            }
             
         }
         catch {
