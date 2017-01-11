@@ -68,7 +68,7 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
 
 You can use this button to deploy TodoList to your Bluemix account, all from the browser. The button will create the application, create and bind any services specified in the manifest.yml file and deploy.
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/TodoList-MySQ)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/TodoList-MySQL)
 
 ### Manually
 
