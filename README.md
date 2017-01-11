@@ -70,6 +70,8 @@ You can use this button to deploy TodoList to your Bluemix account, all from the
 
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/TodoList-MySQL)
 
+To finish, you need to setup the database by following the instructions below **starting with step 3.**
+
 ### Manually
 
 1. Create the service
