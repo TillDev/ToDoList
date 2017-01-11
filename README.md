@@ -62,9 +62,15 @@ A MySQL implementation of the [TodoList](https://github.com/IBM-Swift/todolist-b
  
 6. Open the [TodoList Client](http://www.todobackend.com/client/index.html?http://localhost:8090)
 
-## Setup MySQL service in Bluemix
+## Deploying to Bluemix:
 
-Before you create the Bluemix database, make sure you first deploy your application.
+### Deploy to Bluemix Button
+
+You can use this button to deploy TodoList to your Bluemix account, all from the browser. The button will create the application, create and bind any services specified in the manifest.yml file and deploy.
+
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/IBM-Swift/TodoList-MySQ)
+
+### Manually
 
 1. Create the service
 
